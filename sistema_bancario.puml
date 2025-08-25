@@ -1,0 +1,55 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+interface Transacao {
+    +registrar(conta: Conta)
+}
+
+class Deposito {
+    - valor : float
+    +registrar(conta: Conta)
+}
+
+class Saque {
+    - valor : float
+    +registrar(conta: Conta)
+}
+
+class Historico {
+    - transacoes : list
+    +adicionar_transacao(transacao: Transacao)
+}
+
+class Conta {
+    - saldo : float
+    - numero : int
+    - agencia : str
+    - limite : float
+    - limite_saques : int
+    - numero_saques : int
+    - cliente : Cliente
+    - historico : Historico
+    +sacar(valor: float)
+    +depositar(valor: float)
+    +exibir_extrato()
+}
+
+class Cliente {
+    - nome : str
+    - cpf : str
+    - data_nascimento : str
+    - endereco : str
+    - contas : list
+    +adicionar_conta(conta: Conta)
+    +realizar_transacao(conta: Conta, transacao: Transacao)
+}
+
+Deposito ..|> Transacao
+Saque ..|> Transacao
+
+Conta --> Cliente
+Conta --> Historico
+Cliente --> "0..*" Conta
+Historico --> "*" Transacao
+@enduml
+
